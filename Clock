@@ -1,0 +1,44 @@
+function setup() {
+  createCanvas(600, 400);
+  textSize(32); // Set text size for clock display
+  textAlign(CENTER, CENTER); // Align text to center
+}
+
+function draw() {
+  background(220);
+
+  let seconds = second(); // Get current second
+  let minutes = minute(); // Get current minute
+  let hours = hour(); // Get current hour in 24-hour format
+
+  // Format time like a clock (HH:MM:SS)
+  let clockText = nf(hours, 2) + ':' + nf(minutes, 2) + ':' + nf(seconds, 2);
+
+  // Display the digital clock at the top
+  fill(0);
+  text(clockText, width / 2, 50); // Center the clock text at the top
+
+  // Map the seconds, minutes, and hours to create the pulsating effect
+  let secWidth = map(seconds, 0, 60, 60, 300); // Line grows as seconds increase
+  let minWidth = map(minutes, 0, 60, 60, 400); // Line grows as minutes increase
+  let hourWidth = map(hours % 12, 0, 12, 60, 500); // Line grows as hours increase (in 12-hour format)
+
+  // Draw the lines
+  noStroke();
+
+  // Hours (largest line)
+  fill(150, 100, 255);
+  rect(50, 150, hourWidth, 20); // Draw a horizontal line for hours
+  fill(0); // Set text color to black
+
+  // Minutes (medium line)
+  fill(100, 200, 255);
+  rect(50, 180, minWidth, 20); // Draw a horizontal line for minutes
+  fill(0); // Set text color to black
+  
+
+  // Seconds (smallest line)
+  fill(255, 150, 100);
+  rect(50, 210, secWidth, 20); // Draw a horizontal line for seconds
+  fill(0); // Set text color to black
+}
