@@ -1,0 +1,76 @@
+let fishy; // Declare a fish variable
+//let img1;
+//let img2;
+let fishColor = "#FFC107"; // Initial fish color
+
+function setup() {
+  createCanvas(600, 600);
+
+  // Create a button
+  let button = createButton("Change color");
+  // Position
+  button.position(250, 400);
+
+  // Add a mousePressed event to the button
+  button.mousePressed(handleClick);
+
+  // Display images
+  //image(img1, 300, 300);
+  //image(img2, 200, 200);
+
+  noLoop(); // Gradient draw once
+
+  // Assign the fishy variable to a class
+  fishy = new Fish(300, 300, 200);
+}
+
+//function preload() {
+//img1 = loadImage('/AdobeStock_491859694.png');
+//img2 = loadImage('/AdobeStock_491859720.png');
+//}
+
+function draw() {
+  let c1 = color("#A9DAF0"); // Light blue
+  let c2 = color("#0A4F6F"); // Dark blue
+
+  // Draw gradient background
+  setGradient(0, 0, width, height, c1, c2);
+
+  // Display the fish
+  fishy.show();
+}
+
+// Fish class to draw the fish
+class Fish {
+  constructor(x, y, size) {
+    this.x = x;
+    this.y = y;
+    this.size = size;
+  }
+
+  show() {
+    fill(fishColor); // Fill the fish with the current color
+    ellipse(this.x, this.y, this.size, this.size / 2); // Fish body
+    fill("black");
+    circle(380, 300, 10); // Fish eye
+    fill(fishColor); // Fill the tail with the same color
+    triangle(200, 300, 150, 250, 150, 350); // Fish tail
+  }
+}
+
+// Function to create a vertical gradient
+function setGradient(x, y, w, h, c1, c2) {
+  for (let i = y; i <= y + h; i++) {
+    let inter = map(i, y, y + h, 0, 1);
+    let c = lerpColor(c1, c2, inter);
+    stroke(c);
+    line(x, i, x + w, i);
+  }
+}
+
+// Function to handle button click
+function handleClick() {
+  // Change fish color to a random color on button click
+  fishColor = color(random(255), random(255), random(255));
+  redraw(); // Redraw the canvas to apply the color change
+}
