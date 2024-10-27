@@ -1,0 +1,165 @@
+let fly;
+let ball;
+let misses = 0;
+let gameOver = false;
+let win = false;
+let restartButton;
+
+function setup() {
+  createCanvas(400, 400);
+  textSize(32);
+  textAlign(CENTER, CENTER);
+
+  // Create the fly and ball
+  fly = new Fly();
+  ball = new Ball();
+
+  // Create the restart button but hide it initially
+  restartButton = createButton("Restart");
+  restartButton.position(width / 2 - 30, height / 2 + 50); // Position below the text
+  restartButton.mousePressed(restartGame);
+  restartButton.hide(); // Initially hidden
+}
+
+function draw() {
+  background(220);
+
+  // Display win or game over messages
+  if (gameOver) {
+    fill(255, 0, 0); // Red color for game over
+    text("Game Over!", width / 2, height / 2);
+    restartButton.show(); // Show the restart button
+    noLoop(); // Stop the game
+    return;
+  }
+
+  if (win) {
+    fill(0, 0, 255); // Blue color for win
+    text("You Win!", width / 2, height / 2);
+    restartButton.show(); // Show the restart button
+    noLoop(); // Stop the game
+    return;
+  }
+
+  // Display the fly and ball
+  fly.move();
+  fly.display();
+
+  // Display and update the ball only if it's fired
+  if (ball.fired) {
+    ball.move();
+    ball.display();
+
+    // Check if the ball hits the fly
+    if (ball.hits(fly)) {
+      win = true;
+    }
+
+    // If the ball goes off-screen without hitting, count it as a miss
+    if (ball.offScreen()) {
+      misses++;
+      ball.reset(); // Reset the ball for the next shot
+    }
+  }
+
+  // Display miss count at the top
+  fill(0);
+  textSize(24);
+  text("Misses: " + misses + " / 3", width / 2, 30);
+
+  // Check for losing condition
+  if (misses >= 3) {
+    gameOver = true;
+  }
+}
+
+// Function to handle shooting the ball with the "S" key
+function keyPressed() {
+  if (key === "s" || key === "S") {
+    ball.fire(); // Fire the ball
+  }
+}
+
+// Fly class (🪰 emoji)
+class Fly {
+  constructor() {
+    this.x = random(width); // Start at random x position
+    this.y = height / 2; // Middle of the screen
+    this.size = 40; // Size of the fly
+    this.xSpeed = 3; // Speed of the fly
+  }
+
+  // Move the fly back and forth
+  move() {
+    this.x += this.xSpeed;
+
+    // Reverse direction when hitting the canvas edges
+    if (this.x > width || this.x < 0) {
+      this.xSpeed *= -1;
+    }
+  }
+
+  // Display the fly (🪰 emoji)
+  display() {
+    textSize(this.size);
+    text("🪰", this.x, this.y);
+  }
+}
+
+// Ball class
+class Ball {
+  constructor() {
+    this.x = width / 2; // Start in the center of the screen
+    this.y = height - 20; // Near the bottom
+    this.size = 20; // Size of the ball
+    this.speed = 5; // Speed of the ball
+    this.fired = false; // Whether the ball is fired or not
+  }
+
+  // Fire the ball
+  fire() {
+    if (!this.fired) {
+      this.fired = true;
+      this.x = width / 2; // Reset to starting position
+      this.y = height - 20; // Near the bottom
+    }
+  }
+
+  // Move the ball upwards
+  move() {
+    this.y -= this.speed;
+  }
+
+  // Display the ball
+  display() {
+    fill(0);
+    ellipse(this.x, this.y, this.size);
+  }
+
+  // Check if the ball hits the fly
+  hits(fly) {
+    let d = dist(this.x, this.y, fly.x, fly.y);
+    return d < this.size / 2 + fly.size / 2;
+  }
+
+  // Check if the ball goes off the screen
+  offScreen() {
+    return this.y < 0;
+  }
+
+  // Reset the ball for the next shot
+  reset() {
+    this.fired = false;
+  }
+}
+
+// Function to restart the game
+function restartGame() {
+  gameOver = false;
+  win = false;
+  misses = 0;
+  fly = new Fly(); // Create a new fly
+  ball = new Ball(); // Create a new ball
+  restartButton.hide(); // Hide the restart button again
+  loop(); // Restart the game loop
+}
