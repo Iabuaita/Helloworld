@@ -1,5 +1,15 @@
-Project Summary >>
+/Project Summary >>
 My project is connected to the Pcom project, which is a gadget attached to the fridge handle to encourage mindful eating.
-The way it works is, when someone touched the fridge handle, it sends data over Bluetooth/Wifi, which prompts to take a breather, solve puzzles, or play games.
+The way it works is that when someone touches the fridge handle, it sends data over Bluetooth/Wifi, which prompts them to take a breather, solve puzzles, or play games.
 
-I'm working on this project solo, and I will be creating these interfaces and games using code. I will be using P5js libraries to incporate motion and sound, in addition to adding interactivity. 
+/Project >> 
+I'm working on this project solo, and I will be creating these interfaces and games using code. 
+I will be using P5js libraries to incorporate motion and sound in addition to adding interactivity. 
+
+/Project Update >>
+The project will be aimed towards mindful eating for late-night snackers. 
+For Hello World, my project will be about coding screens on the iPad. The idea is an emojie that's sleeping, and once it detects movement around the iPad.
+It will open its eyes and give a look. 
+
+/Techincal >>
+I am currently considering using the ml5.js Library. 
